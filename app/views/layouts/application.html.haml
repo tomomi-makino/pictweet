@@ -1,0 +1,43 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Pictweet
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+    :javascript
+      WebFontConfig = {
+        google: { families: [ 'Unica+One::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+  %body
+    %header.header
+      .header__bar.row
+        %h1.grid-6
+          %a{:href => "/"} PicTweet
+        - if user_signed_in?
+          .user_nav.grid-6
+            %span
+              = current_user.nickname
+              %ul.user__info
+                %li
+                  = link_to "マイページ", "/users/#{current_user.id}"
+                  = link_to "ログアウト", destroy_user_session_path, method: :delete
+            = link_to "投稿する", "/tweets/new", class: "post"
+        - else
+          .user_nav.grid-6
+            = link_to "ログイン", new_user_session_path, class: :post
+            = link_to "新規登録", new_user_registration_path, class: :post
+    = yield
+    %footer
+      %p
+        Copyright PicTweet 2019.

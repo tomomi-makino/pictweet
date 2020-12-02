@@ -1,0 +1,16 @@
+.content_post{:style => "background-image: url(#{tweet.image});"}
+  .more
+    %span= image_tag "arrow_top.png"
+    %ul.more_list
+      %li
+        = link_to "詳細", "/tweets/#{tweet.id}/", method: :get
+      - if user_signed_in? && current_user.id == tweet.user_id
+        %li
+          = link_to "編集", "/tweets/#{tweet.id}/edit", method: :get
+        %li
+          = link_to "削除", "/tweets/#{tweet.id}", method: :delete
+  = simple_format(tweet.text)
+  %span.name
+    %a{:href => "/users/#{tweet.user.id}"}
+      %span 投稿者
+      = tweet.user.nickname
